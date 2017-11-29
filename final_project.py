@@ -32,10 +32,10 @@ def index():
     # return "<h1>this is the index page!<h1>"
     return render_template('index.html')
 
-@app.route('/about')
+@app.route('/customers')
 def show_all_customers():
     customers = Customer.query.all()
-    return render_template('about.html', customers=customers)
+    return render_template('customer-all.html', customers=customers)
 
 # @app.route('/artist/add', methods=['GET', 'POST'])
 # def add_customers():
@@ -88,7 +88,7 @@ def show_all_customers():
 @app.route('/orders')
 def show_all_orders():
     orders = Order.query.all()
-    return render_template('song-all.html', orders=orders)
+    return render_template('order-all.html', orders=orders)
 
 
 @app.route('/about')
@@ -96,9 +96,6 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/users')
-def show_all_users():
-    return render_template('user-all.html')
 
 
 # @app.route('/form-demo', methods=['GET', 'POST'])
