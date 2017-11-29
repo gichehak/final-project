@@ -1,8 +1,11 @@
 import os
 from flask import Flask, session, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to get secure key'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # setup SQLAlchemy
 basedir = os.path.abspath(os.path.dirname(__file__))
