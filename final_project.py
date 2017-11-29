@@ -56,7 +56,7 @@ def show_all_customers():
 #         return redirect(url_for('show_all_customers'))
 
     # @app.route('/customer/edit/<int:id>', methods=['GET', 'POST'])
-    # def edit_customers(id):
+    # def edit_customer(id):
     #     customer = Customer.query.filter_by(id=id).first()
     #     if request.method == 'GET':
     #         return render_template('customer-edit.html', customer=customer)
@@ -78,7 +78,7 @@ def show_all_customers():
 #         name = request.form['name']
 #         year = request.form['year']
 #         lyrics = request.form['lyrics']
-#         customer_name = request.form['customer_name']
+#         customer_name = request.form['customer']
 #         customer = Customer.query.filter_by(name=customer_name).first()
 #         order = Order(name=name, year=year, lyrics=lyrics, customer=customer)
 #
