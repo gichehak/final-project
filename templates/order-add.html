@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+{% extends "home-base.html"%}
+{% block title %}Add Orders{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-folder" aria-hidden="true"></i> Add Orders:</h1>
+    <form action="/order/add" method="post">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" type="text" name="name" placeholder="Name of the Order" required="true">
+      </div>
+      <div class="form-group">
+        <label>Year</label>
+        <select class="form-control" name="year">
+          {% for i in range(2000, 2025) %}
+            {% if i == 2017 %}
+              <option selected="selected">{{i}}</option>
+            {% else %}
+              <option>{{i}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Customer</label>
+        <select class="form-control" name="customer">
+          {% for customer in customers %}
+              <option>{{customer.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        Customer not in the list? <a href="/customer/add" class="btn btn-success" role="button" aria-disabled="true">Add Customers</a>
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" name="description" placeholder="Description" required="true"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Order</button>
+    </form>
+  </div>
+
+{% endblock%}

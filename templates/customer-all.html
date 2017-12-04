@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+{% extends "home-base.html"%}
+{% block title %}All Customers{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Customers:</h1>
+    <div class="row bottom-margin">
+      <a href="/customer/add" class="btn btn-primary" role="button" aria-disabled="true">Add Customers</a>
+    </div>
+    {% if artists %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>address</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+          <tr>
+              <th scope="row">{{artist.id}}</th>
+              <td>{{customer.name}}</td>
+              <td>{{customer.address}}</td>
+              <td>
+                <a href="/customer/edit/{{customers.id}}" class="btn btn-success" role="button">Edit</a>
+                <a href="/customers/delete/{{customer.id}}" class="btn btn-danger" role="button">Delete</a>
+                <button class="btn btn-warning delete_ajax_btn" role="button" data-artist-id="{{customer.id}}">Delete Ajax</a>
+              </td>
+          </tr>
+          {% endfor%}
+        </tbody>
+      </table>
+    {% else %}
+      <h3>there are no customers in the database yet.</h3>
+    {% endif %}
+  </div>
+
+{% endblock%}
+
+{% block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function() {
+    $(".delete_ajax_btn").click(function(event) {
+      var artist_id = $(this).data("customer-id");
+      // get the table row of this song
+      var row = $(this).parent().parent();
+      swal({
+          title: "Are you sure?",
+          text: "All orders of this customer will be deleted too!",
+          type: "warning",
+          html: true,
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/customer/" + customer_id,
+                success: function(response) {
+                  console.log(response);
+                  row.remove(); // remove the table row
+                  swal({
+                    title: "Deleted!",
+                    text: response.name + " has been deleted.",
+                    type: "success",
+                    timer: 2500,
+                    showConfirmButton: false
+                  }); // end of SweetAlert
+                } // end of success callback function
+              }) // end of ajax call
+              .fail(function(error) {
+                // console.log(data);
+                swal({
+                  title: "Oops...",
+                  text: "Deletion failed",
+                  type: "error",
+                  timer: 2000,
+                  showConfirmButton: false
+                }); // end of SweetAlert
+              }); // end of fail callback function
+          } // end of if confirmed block
+        }); // end of confirmed function of SweetAlert
+    }); // end of button click event function
+  }); // end doc ready
+</script>
+{% endblock%}

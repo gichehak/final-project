@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+{% extends "home-base.html"%}
+{% block title %}All Orders{% endblock %}
+{% block page_content%}
+
+<!-- Page Content -->
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-folder" aria-hidden="true"></i> Orders:</h1>
+  <div class="row bottom-margin">
+    <a href="/order/add" class="btn btn-primary" role="button" aria-disabled="true">Add Orders</a>
+  </div>
+  {% if orders %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Customer</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <th scope="row">{{order.id}}</th>
+        <td>{{order.name}}</td>
+        <td>{{order.year}}</td>
+        <td>{{order.customer.name}}</td>
+        <td>
+          <!--  view lyrics button trigger modal -->
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#{{order.id}}">
+                View
+              </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="{{order.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{order.name}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                </div>
+                <div class="modal-body">
+                  <pre>{{order.description}}</pre>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <a href="/order/edit/{{order.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
+          <a href="/order/delete/{{order.id}}" class="btn btn-danger" role="button" aria-disabled="true">Delete</a>
+          <button class="btn btn-warning delete_ajax_btn" data-song-id={{order.id}}>Delete Ajax</button>
+        </td>
+      </tr>
+
+      {% endfor%}
+    </tbody>
+  </table>
+  {% else %}
+  <h3>There are no orders in the database yet.</h3> {% endif %}
+</div>
+
+{% endblock%}
+
+{% block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function() {
+    $(".delete_ajax_btn").click(function(event) {
+      var order_id = $(this).data("order-id");
+      // get the table row of this song
+      var row = $(this).parent().parent();
+      swal({
+          title: "Are you sure?",
+          // text: "You are going to delete song" + song.id + ".",
+          type: "warning",
+          html: true,
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            $.ajax({
+                type: "DELETE",
+                url: "/api/order/" + order_id,
+                success: function(response) {
+                  console.log(response);
+                  row.remove(); // remove the table row
+                  swal({
+                    title: "Deleted!",
+                    text: response.name + " has been deleted.",
+                    type: "success",
+                    timer: 2500,
+                    showConfirmButton: false
+                  }); // end of SweetAlert
+                } // end of success callback function
+              }) // end of ajax call
+              .fail(function(error) {
+                // console.log(data);
+                swal({
+                  title: "Oops...",
+                  text: "Deletion failed",
+                  type: "error",
+                  timer: 2000,
+                  showConfirmButton: false
+                }); // end of SweetAlert
+              }); // end of fail callback function
+          } // end of if confirmed block
+        }); // end of confirmed function of SweetAlert
+    }); // end of button click event function
+  }); // end doc ready
+</script>
+{% endblock%}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends "home-base.html"%}
+{% block title %}Edit Order{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-folder" aria-hidden="true"></i> Edit Order:</h1>
+    <form action="/order/edit/{{order.id}}" method="post">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" type="text" name="name" value="{{order.name}}" required="true">
+      </div>
+      <div class="form-group">
+        <label>Year</label>
+        <select class="form-control" name="year">
+          {% for i in range(2000, 2025) %}
+            {% if i == order.year %}
+              <option selected="selected">{{i}}</option>
+            {% else %}
+              <option>{{i}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Artist</label>
+        <select class="form-control" name="customer">
+          {% for customer in customers %}
+            {% if customer == order.customer %}
+              <option selected="selected">{{customer.name}}</option>
+            {% else %}
+              <option>{{customer.name}}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        Customer not in the list? <a href="/customer/add" class="btn btn-success" role="button" aria-disabled="true">Add Customers</a>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" name="description" required="true">{{order.description}}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div>
+
+{% endblock%}

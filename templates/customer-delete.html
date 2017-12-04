@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends "home-base.html"%}
+{% block title %}Delete Customer{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Delete Customer:</h1>
+    <form action="/customer/delete/{{customer.id}}" method="post">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" type="text" name="name" value="{{customer.name}}" required="true" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <textarea class="form-control" name="about" required="true" readonly="true">{{customer.address}}</textarea>
+      </div>
+      <button type="submit" class="btn btn-danger" id="delete_btn">Delete</button>
+    </form>
+  </div>
+
+{% endblock%}
+
+{% block scripts%}
+  {{super()}}
+  <script>
+  $(document).ready(function () {
+    $('#delete_btn').click(function () {
+      if (! confirm('All related songs will be deleted too!! Are you sure?')) {
+        return false;
+      }
+    })
+  });
+  </script>
+{% endblock%}

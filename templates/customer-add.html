@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+{% extends "home-base.html"%}
+{% block title %}Add Customers{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Add Artists:</h1>
+    <form action="/customer/add" method="post" id="add-customer-form">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" type="text" name="name" placeholder="Name of the Customer" required="true">
+      </div>
+      <div class="form-group">
+        <label>address</label>
+        <textarea class="form-control" name="about" placeholder="Brief Introduction" required="true"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Customer</button>
+      <button type="submit" class="btn btn-success" id="insert-ajax-btn">Add Customer Ajax</button>
+    </form>
+  </div>
+
+{% endblock%}
+
+{% block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function() {
+    $("#insert-ajax-btn").click(function(event) {
+      event.preventDefault(); // prevent the button to submit the form
+      $.ajax({
+          type: "POST",
+          url: "/api/customer/add",
+          data: $("#add-customer-form").serialize(),
+          success: function(response) {
+            window.location.replace("/customers"); // redirect
+          } // end of success callback function
+        }) // end of ajax call
+        .fail(function(error) {
+          // console.log(data);
+          swal({
+            title: "Oops...",
+            text: "Insertion failed",
+            type: "error",
+            timer: 2000,
+            showConfirmButton: false
+          }); // end of SweetAlert
+        }); // end of fail callback function
+    }); // end of button click event function
+  }); // end doc ready
+</script>
+{% endblock%}
