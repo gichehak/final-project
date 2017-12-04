@@ -10,25 +10,25 @@
     <div class="row bottom-margin">
       <a href="/customer/add" class="btn btn-primary" role="button" aria-disabled="true">Add Customers</a>
     </div>
-    {% if artists %}
+    {% if customers %}
       <table class="table">
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>address</th>
+            <th>Address</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for customer in customers %}
           <tr>
-              <th scope="row">{{artist.id}}</th>
+              <th scope="row">{{customer.id}}</th>
               <td>{{customer.name}}</td>
               <td>{{customer.address}}</td>
               <td>
                 <a href="/customer/edit/{{customers.id}}" class="btn btn-success" role="button">Edit</a>
-                <a href="/customers/delete/{{customer.id}}" class="btn btn-danger" role="button">Delete</a>
+                <a href="/customer/delete/{{customer.id}}" class="btn btn-danger" role="button">Delete</a>
                 <button class="btn btn-warning delete_ajax_btn" role="button" data-artist-id="{{customer.id}}">Delete Ajax</a>
               </td>
           </tr>
@@ -36,7 +36,7 @@
         </tbody>
       </table>
     {% else %}
-      <h3>there are no customers in the database yet.</h3>
+      <h3>There are no customers in the database yet.</h3>
     {% endif %}
   </div>
 
@@ -47,7 +47,7 @@
 <script>
   $(document).ready(function() {
     $(".delete_ajax_btn").click(function(event) {
-      var artist_id = $(this).data("customer-id");
+      var customer_id = $(this).data("customer-id");
       // get the table row of this song
       var row = $(this).parent().parent();
       swal({

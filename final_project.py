@@ -83,7 +83,7 @@ def edit_customers(id):
     if request.method == 'POST':
         # update data based on the form data
         customer.name = request.form['name']
-        customer.about = request.form['address']
+        customer.address = request.form['address']
         # update the database
         db.session.commit()
         return redirect(url_for('show_all_customers'))
@@ -109,6 +109,7 @@ def delete_ajax_customer(id):
     db.session.commit()
     return jsonify({"id": str(customer.id), "name": customer.name})
 
+
 @app.route('/orders')
 def show_all_orders():
     orders = Order.query.all()
@@ -125,7 +126,7 @@ def add_orders():
         name = request.form['name']
         year = request.form['year']
         desctription = request.form['desctription']
-        customer_name = request.form['customer_name']
+        customer_name = request.form['customer']
         customer = Customer.query.filter_by(name=customer_name).first()
         order = Order(name=name, year=year, desctription=desctription, customer=customer)
 
