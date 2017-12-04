@@ -109,7 +109,6 @@ def delete_ajax_customer(id):
     db.session.commit()
     return jsonify({"id": str(customer.id), "name": customer.name})
 
-
 @app.route('/orders')
 def show_all_orders():
     orders = Order.query.all()
