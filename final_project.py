@@ -1,5 +1,5 @@
 import os
-from flask import Flask, session, render_template, request, flash, redirect, url_for
+from flask import Flask, session, render_template, request, flash, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -27,7 +27,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
     year = db.Column(db.Integer)
-    desctription = db.Column(db.Text)
+    description = db.Column(db.Text)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
 
 
@@ -76,7 +76,7 @@ def add_ajax_customers():
 
 
 @app.route('/customer/edit/<int:id>', methods=['GET', 'POST'])
-def edit_customers(id):
+def edit_customer(id):
     customer = Customer.query.filter_by(id=id).first()
     if request.method == 'GET':
         return render_template('customer-edit.html', customer=customer)
@@ -95,8 +95,8 @@ def delete_customer(id):
     if request.method == 'GET':
         return render_template('customer-delete.html', customer=customer)
     if request.method == 'POST':
-        # delete the artist by id
-        # all related songs are deleted as well
+        # delete the customer by id
+        # all related orders are deleted as well
         db.session.delete(customer)
         db.session.commit()
         return redirect(url_for('show_all_customers'))
@@ -125,10 +125,10 @@ def add_orders():
         # get data from the form
         name = request.form['name']
         year = request.form['year']
-        desctription = request.form['desctription']
+        description = request.form['description']
         customer_name = request.form['customer']
         customer = Customer.query.filter_by(name=customer_name).first()
-        order = Order(name=name, year=year, desctription=desctription, customer=customer)
+        order = Order(name=name, year=year, description=description, customer=customer)
 
         # insert the data into the database
         db.session.add(order)
@@ -146,7 +146,7 @@ def edit_order(id):
         # update data based on the form data
         order.name = request.form['name']
         order.year = request.form['year']
-        order.desctription = request.form['desctription']
+        order.description = request.form['description']
         customer_name = request.form['customer']
         customer = Customer.query.filter_by(name=customer_name).first()
         order.customer = customer

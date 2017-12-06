@@ -27,9 +27,9 @@
               <td>{{customer.name}}</td>
               <td>{{customer.address}}</td>
               <td>
-                <a href="/customer/edit/{{customers.id}}" class="btn btn-success" role="button">Edit</a>
+                <a href="/customer/edit/{{customer.id}}" class="btn btn-success" role="button">Edit</a>
                 <a href="/customer/delete/{{customer.id}}" class="btn btn-danger" role="button">Delete</a>
-                <button class="btn btn-warning delete_ajax_btn" role="button" data-artist-id="{{customer.id}}">Delete Ajax</a>
+                <button class="btn btn-warning delete_ajax_btn" role="button" data-customer-id="{{customer.id}}">Delete Ajax</a>
               </td>
           </tr>
           {% endfor%}
@@ -41,7 +41,6 @@
   </div>
 
 {% endblock%}
-
 {% block scripts%}
 {{super()}}
 <script>
